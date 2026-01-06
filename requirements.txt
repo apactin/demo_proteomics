@@ -5,3 +5,4 @@ openpyxl>=3.1
 plotly>=5.18
 numpy>=1.26
 matplotlib-venn>=1.1.2
+watchdog>=6.0.0
