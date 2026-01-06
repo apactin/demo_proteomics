@@ -132,8 +132,181 @@ with st.sidebar:
 # -------------------------
 # Tabs: Pipeline vs Viewer vs Stats
 # -------------------------
-tab_pipeline, tab_viewer, tab_stats = st.tabs(["Pipeline", "Viewer", "Stats"])
+tab_info, tab_pipeline, tab_viewer, tab_stats = st.tabs(["Info", "Pipeline", "Viewer", "Stats"])
 
+# -------------------------
+# Info tab
+# -------------------------
+with tab_info:
+    st.header("Proteomics Pipeline Overview")
+
+    st.markdown(
+        """
+This application implements an end-to-end LC/MS proteomics analysis pipeline
+designed to quantify stereoselective covalent labeling events and visualize
+chromatographic evidence supporting site-level calls.
+
+This tab provides a high-level overview of the pipeline logic, data flow,
+and interpretation of outputs.
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Pipeline Structure")
+
+    st.markdown(
+        """
+The pipeline is organized into **four sequential stages**, each producing
+intermediate outputs that feed into downstream analysis:
+
+1. **Log2FC Compilation**
+2. **Stereoselectivity Scoring + UniProt Annotation**
+3. **Peptide-to-Site Mapping**
+4. **Chromatographic Peak Splitting + Trace Extraction**
+
+Each stage can be inspected independently once outputs are generated.
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Step 1: Log2FC Compilation (Input CSVs)")
+
+    st.markdown(
+        """
+**Purpose:**  
+Aggregate replicate-level LC/MS quantification files into a unified
+wide-format dataset containing Log2 fold-change values.
+
+**Key concepts:**
+- Supports both MS2 and MS3 quantification
+- Automatically infers MS level and dynamic exclusion window (0s / 5s / 30s)
+- Handles multiple injections per condition
+
+**Primary output:**  
+`merged_log2fc.xlsx`
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Step 2: Stereoselectivity Analysis")
+
+    st.markdown(
+        """
+**Purpose:**  
+Compute site-level stereoselectivity scores and integrate protein annotations.
+
+**Key concepts:**
+- Window-aware scoring across available MS2/MS3 data
+- Adaptive hit calling based on data completeness
+- UniProt metadata enrichment
+
+**Primary output:**  
+`merged_log2fc_results.xlsx`
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Step 3: Peptide Mapping")
+
+    st.markdown(
+        """
+**Purpose:**  
+Map quantified peptides to specific modification sites and protein positions.
+
+**Key concepts:**
+- Uses FragPipe peptide mapping outputs
+- Resolves ambiguous peptide-to-site relationships
+- Produces a site-centric view of the dataset
+
+**Primary output:**  
+`merged_log2fc_results_sites.xlsx`
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Step 4: Chromatographic Peak Splitting")
+
+    st.markdown(
+        """
+**Purpose:**  
+Analyze Skyline chromatograms to detect peak splitting and extract
+chromatographic traces for visualization.
+
+**Key concepts:**
+- Identifies single vs split peaks
+- Computes quantitative splitting metrics
+- Extracts full chromatographic traces into a columnar format
+
+**Primary outputs:**
+- Final split workbook (`*_split.xlsx`)
+- Chromatographic traces (`chrom_traces.parquet`)
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Viewer Tab")
+
+    st.markdown(
+        """
+The **Viewer** tab enables interactive inspection of chromatographic evidence
+supporting individual site calls.
+
+**Features include:**
+- Filtering by hit category and scoring metrics
+- Interactive trace visualization
+- Cross-navigation between related sites and conditions
+
+This tab is intended for **manual validation and exploratory analysis**.
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Stats Tab")
+
+    st.markdown(
+        """
+The **Stats** tab provides summary-level views of the dataset, including:
+
+- Hit counts and overlap summaries
+- Distributions of stereoselectivity scores
+- Comparisons across MS modes and windows
+
+These views are designed to support high-level interpretation
+and dataset quality assessment.
+"""
+    )
+
+    st.divider()
+
+    # -------------------------
+    st.subheader("Interpreting Results")
+
+    st.markdown(
+        """
+When interpreting results from this pipeline, consider:
+
+- Consistency across MS modes and time windows
+- Chromatographic support for site-level calls
+- Potential confounding effects from peptide coverage or peak interference
+
+Final conclusions should integrate **both quantitative scores and
+chromatographic evidence**.
+"""
+    )
 
 # -------------------------
 # Pipeline tab (read-only UI mirror)

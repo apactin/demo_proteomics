@@ -1,15 +1,5 @@
 # proteomics_app
 
-Streamlit wizard for the Taunton Lab proteomics pipeline.
+Demo Streamlit wizard for the Taunton Lab proteomics pipeline.
 
-Install Docker Desktop
-
-Download ZIP from GitHub
-
-Unzip
-
-Run docker compose up
-
-Open http://localhost:8525
-
-That’s it.
+This demo loads the wizard in read-only mode, with a predetermined dataset. Allows viewing the dataset and statistics, but not running the analysis pipeline.
